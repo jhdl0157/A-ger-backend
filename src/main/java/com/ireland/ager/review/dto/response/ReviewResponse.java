@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* @Class : ReviewResponse
+* @Description : 리뷰 도메인에 대한 Response DTO
+**/
 @Data
 @Builder
 public class ReviewResponse {
@@ -20,6 +24,12 @@ public class ReviewResponse {
     int stars;
     LocalDateTime createdAt;
 
+    /**
+     * @Method : toReviewResponse
+     * @Description : 리뷰 데이터 응답 객체화
+     * @Parameter : [review]
+     * @Return : ReviewResponse
+     **/
     public static ReviewResponse toReviewResponse(Review review) {
         return ReviewResponse.builder()
                 .buyerName(review.getBuyerNickname())

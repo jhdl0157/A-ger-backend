@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @Class : ReviewRepository
+ * @Description : 리뷰 도메인에 대한 레포지토리
+ **/
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryCustom {
-    List<Review> findAllBySellerId(Account accountId);
 }
