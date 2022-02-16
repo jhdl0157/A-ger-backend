@@ -14,6 +14,12 @@ public class CommentRequest {
 
     String commentContent;
 
+    /**
+     * @Method : toComment
+     * @Description : 댓글 데이터 객체화
+     * @Parameter : [commentRequest, board, account]
+     * @Return : Comment
+     **/
     public static Comment toComment(CommentRequest commentRequest, Board board, Account account) {
         Comment comment = new Comment();
         comment.addAccount(account);

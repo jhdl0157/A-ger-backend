@@ -12,6 +12,11 @@ import java.util.List;
 
 @Data
 @Builder
+
+/**
+ * @Class : BoardResponse
+ * @Description : 게시판 도메인에 대한 Response DTO
+ **/
 public class BoardResponse {
     Long boardId;
     String title;
@@ -22,6 +27,12 @@ public class BoardResponse {
     LocalDateTime updateAt;
     boolean isOwner;
 
+    /**
+     * @Method : toBoardResponse
+     * @Description : 게시판 데이터 응답 객체화
+     * @Parameter : [board, account]
+     * @Return : BoardResponse
+     **/
     public static BoardResponse toBoardResponse(Board board, Account account) {
         return BoardResponse.builder()
                 .boardId(board.getBoardId())

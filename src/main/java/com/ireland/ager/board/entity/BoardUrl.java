@@ -7,6 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @Class : BoardUrl
+ * @Description : 게시판 이미지 Url 도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -27,6 +31,4 @@ public class BoardUrl implements Serializable {
     private Board board;
 
     private String url;
-
-
 }
