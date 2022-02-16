@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @Class : UploadServiceImpl
+ * @Description : S3 이미지 업로드 도메인에 대한 서비스
+ **/
 @Service
 @Transactional
 @Slf4j
@@ -39,6 +43,12 @@ public class UploadServiceImpl {
 
     private final AmazonS3Client amazonS3Client;
 
+    /**
+     * @Method : delete
+     * @Description : S3에서 상품 이미지 삭제
+     * @Parameter : [currentFileImageUrlList, thumbNailUrl]
+     * @Return : null
+     **/
     public void delete(List<Url> currentFileImageUrlList, String thumbNailUrl) throws AmazonServiceException {
         try {
             amazonS3Client.deleteObject(bucket, thumbNailUrl.split("/")[3]);
@@ -52,6 +62,12 @@ public class UploadServiceImpl {
         }
     }
 
+    /**
+     * @Method : deleteBoard
+     * @Description : S3에서 게시물 이미지 삭제
+     * @Parameter : [currentFileImageUrlList]
+     * @Return : null
+     **/
     public void deleteBoard(List<BoardUrl> currentFileImageUrlList) throws AmazonServiceException {
         for (BoardUrl url : currentFileImageUrlList) {
             amazonS3Client.deleteObject(bucket, url.getUrl().split("/")[3]);
@@ -59,6 +75,12 @@ public class UploadServiceImpl {
         }
     }
 
+    /**
+     * @Method : uploadImages
+     * @Description : S3 이미지 다중 파일 업로드
+     * @Parameter : [uploadFiles]
+     * @Return : List<String>
+     **/
     public List<String> uploadImages(List<MultipartFile> uploadFiles) throws IOException {
         log.info("업로드 파일의 갯수 : {}", uploadFiles.size());
 
@@ -69,6 +91,12 @@ public class UploadServiceImpl {
         return uploadUrl;
     }
 
+    /**
+     * @Method : uploadImg
+     * @Description : S3 이미지 단일 파일 업로드
+     * @Parameter : [multipartFile]
+     * @Return : String
+     **/
     public String uploadImg(MultipartFile multipartFile) throws IOException {
         String origName = multipartFile.getOriginalFilename();
         final String ext = origName.substring(origName.lastIndexOf('.'));
@@ -79,6 +107,12 @@ public class UploadServiceImpl {
         } else throw new InvaildFileExtensionException();
     }
 
+    /**
+     * @Method : uploadImgToS3
+     * @Description : S3 이미지 업로드
+     * @Parameter : [image, FileName, ext]
+     * @Return : String
+     **/
     public String uploadImgToS3(BufferedImage image, String Filename, String ext)
             throws IllegalStateException, IOException {
         String url;
@@ -102,6 +136,12 @@ public class UploadServiceImpl {
         return url;
     }
 
+    /**
+     * @Method : makeThumbNail
+     * @Description : 썸네일 이미지 생성
+     * @Parameter : [multipartFile]
+     * @Return : String
+     **/
     public String makeThumbNail(MultipartFile multipartFile) throws IOException {
         String origName = multipartFile.getOriginalFilename();
         final String ext = origName.substring(origName.lastIndexOf('.'));
@@ -118,6 +158,12 @@ public class UploadServiceImpl {
         } else throw new InvaildFileExtensionException();
     }
 
+    /**
+     * @Method : getUuid
+     * @Description : uuid 값 생성
+     * @Parameter : []
+     * @Return : String
+     **/
     private static String getUuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }

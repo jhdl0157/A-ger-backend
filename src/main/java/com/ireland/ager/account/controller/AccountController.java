@@ -32,7 +32,7 @@ public class AccountController {
     private final AuthServiceImpl authService;
 
     private final ResponseService responseService;
-
+  
     /**
      * @Method : loginUrl
      * @Description : 로그인 링크 반환

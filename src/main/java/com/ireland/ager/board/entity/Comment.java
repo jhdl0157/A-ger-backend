@@ -8,6 +8,10 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @Class : Comment
+ * @Description : 댓글 도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -31,6 +35,12 @@ public class Comment extends BaseEntity implements Serializable {
 
     private String commentContent;
 
+    /**
+     * @Method : addAccount
+     * @Description : 계정 정보 추가
+     * @Parameter : [account]
+     * @Return : null
+     **/
     public void addAccount(Account account) {
         this.accountId = account;
     }
