@@ -10,6 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Class : TradeController
+ * @Description : 거래 도메인에 대한 컨트롤러
+ **/
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -19,6 +23,12 @@ public class TradeController {
     private final TradeServiceImpl tradeService;
     private final ResponseService responseService;
 
+    /**
+     * @Method : setStatus
+     * @Description : 상품 거래 상태 수정
+     * @Parameter : [accessToken, roomId, status]
+     * @Return : ResponseEntity<CommonResult>
+     **/
     @PostMapping("/{roomId}")
     public ResponseEntity<CommonResult> setStatus(
             @RequestHeader("Authorization") String accessToken,

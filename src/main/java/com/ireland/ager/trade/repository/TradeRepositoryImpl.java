@@ -21,28 +21,38 @@ import java.util.List;
 
 import static com.ireland.ager.trade.entity.QTrade.trade;
 
+/**
+ * @Class : TradeRepositoryImpl
+ * @Description : 거래 도메인에 대한 레파지토리
+ **/
 @Repository
 @RequiredArgsConstructor
-public class TradeRepositoryImpl implements TradeRepositoryCustom  {
+public class TradeRepositoryImpl implements TradeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * @Method : findBuyProductsByAccountId
+     * @Description : 사용자 별 구매 상품 목록 조회
+     * @Parameter : [accountId, pageable]
+     * @Return : Slice<ProductThumbResponse>
+     **/
     @Override
     public Slice<ProductThumbResponse> findBuyProductsByAccountId(Long accountId, Pageable pageable) {
         JPAQuery<Trade> tradeQuery = queryFactory
                 .selectFrom(trade)
                 .where(trade.buyerId.accountId.eq(accountId))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1); //limit보다 한 개 더 들고온다.
+                .limit(pageable.getPageSize() + 1);
         for (Sort.Order o : pageable.getSort()) {
             PathBuilder pathBuilder = new PathBuilder(trade.getType(), trade.getMetadata());
             tradeQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
         List<Trade> tradeList = tradeQuery.fetch();
-        List<Product> productList=new ArrayList<>();
-        for(Trade trade:tradeList) productList.add(trade.getProduct());
-        List<ProductThumbResponse> content= new ArrayList<>(ProductThumbResponse.toProductListResponse(productList));
+        List<Product> productList = new ArrayList<>();
+        for (Trade trade : tradeList) productList.add(trade.getProduct());
+        List<ProductThumbResponse> content = new ArrayList<>(ProductThumbResponse.toProductListResponse(productList));
         boolean hasNext = false;
-        //마지막 페이지는 사이즈가 항상 작다.
+
         if (content.size() > pageable.getPageSize()) {
             content.remove(pageable.getPageSize());
             hasNext = true;

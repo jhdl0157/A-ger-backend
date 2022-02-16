@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+/**
+ * @Class : TradeServiceImpl
+ * @Description : 거래 도메인에 대한 서비스
+ **/
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +31,12 @@ public class TradeServiceImpl {
     private final MessageRoomRepository messageRoomRepository;
     private final TradeRepository tradeRepository;
 
+    /**
+     * @Method : isUpdated
+     * @Description : 거래 상태 업데이트
+     * @Parameter : [roomId, accessToken, updateStatus]
+     * @Return : null
+     **/
     public void isUpdated(Long roomId,
                           String accessToken,
                           String updateStatus) {
