@@ -7,6 +7,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * @Class : Trade
+ * @Description : 거래 도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -29,6 +33,12 @@ public class Trade {
     @JoinColumn(name = "buyer_id")
     private Account buyerId;
 
+    /**
+     * @Method : toTrade
+     * @Description : 거래 요청 데이터 객체화
+     * @Parameter : [product, buyerId]
+     * @Return : Trade
+     **/
     public static Trade toTrade(Product product, Account buyerId) {
         return Trade.builder()
                 .product(product)
