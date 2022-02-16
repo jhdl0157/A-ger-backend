@@ -21,6 +21,10 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @Class : BoardController
+ * @Description : 게시판 도메인에 대한 컨트롤러
+ **/
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +36,12 @@ public class BoardController {
     private final BoardServiceImpl boardService;
     private final AccountServiceImpl accountService;
 
+    /**
+     * @Method : findBoardById
+     * @Description : 회원 아이디로 게시물을 조회
+     * @Parameter : [boardId, accessToken]
+     * @Return : ResponseEntity<SingleResult<BoardResponse>>
+     **/
     @GetMapping("/{boardId}")
     public ResponseEntity<SingleResult<BoardResponse>> findBoardById(@PathVariable Long boardId,
                                                                      @RequestHeader("Authorization") String accessToken) {
@@ -43,6 +53,12 @@ public class BoardController {
         return new ResponseEntity<>(responseService.getSingleResult(BoardResponse.toBoardResponse(board, account)), HttpStatus.OK);
     }
 
+    /**
+     * @Method : createPost
+     * @Description : 게시물 생성
+     * @Parameter : [accessToken, multipartFile, boardRequest, bindingResult]
+     * @Return : ResponseEntity<SingleResult<BoardResponse>>
+     **/
     @PostMapping
     public ResponseEntity<SingleResult<BoardResponse>> createPost(@RequestHeader("Authorization") String accessToken,
                                                                   @RequestPart(value = "file") List<MultipartFile> multipartFile,
@@ -56,6 +72,12 @@ public class BoardController {
         return new ResponseEntity<>(responseService.getSingleResult(boardResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method : updatePost
+     * @Description : 게시물 수정
+     * @Parameter : [accessToken, boardRequest, multipartFile, boardId]
+     * @Return : ResponseEntity<SingleResult<BoardResponse>>
+     **/
     @PatchMapping("/{boardId}")
     public ResponseEntity<SingleResult<BoardResponse>> updatePost(@RequestHeader("Authorization") String accessToken,
                                                                   @RequestPart(value = "board") BoardRequest boardRequest,
@@ -66,6 +88,12 @@ public class BoardController {
         return new ResponseEntity<>(responseService.getSingleResult(boardResponse), HttpStatus.OK);
     }
 
+    /**
+     * @Method : deletePost
+     * @Description : 게시물 삭제
+     * @Parameter : [accessToken, boardId]
+     * @Return : ResponseEntity<CommonResult>
+     **/
     @DeleteMapping("/{boardId}")
     public ResponseEntity<CommonResult> deletePost(@RequestHeader("Authorization") String accessToken,
                                                    @PathVariable(value = "boardId") Long boardId) throws IOException {

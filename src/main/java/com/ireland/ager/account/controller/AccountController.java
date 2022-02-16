@@ -29,7 +29,6 @@ public class AccountController {
 
     private final ResponseService responseService;
 
-
     @GetMapping("/login-url")
     public ResponseEntity<SingleResult<String>> loginUrl() {
         log.info("test");
