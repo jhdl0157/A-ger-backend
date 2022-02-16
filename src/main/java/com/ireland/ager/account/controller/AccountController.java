@@ -41,10 +41,9 @@ public class AccountController {
      **/
     @GetMapping("/login-url")
     public ResponseEntity<SingleResult<String>> loginUrl() {
-        log.info("test");
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
     }
-
+  
     /**
      * @Method : getTokenAndJoinOrLogin
      * @Description : 회원가입 또는 로그인
@@ -55,7 +54,7 @@ public class AccountController {
     public ResponseEntity<SingleResult<MyAccountResponse>> getTokenAndJoinOrLogin(@RequestParam("code") String code) {
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
     }
-
+  
     /**
      * @Method : logout
      * @Description : 로그아웃

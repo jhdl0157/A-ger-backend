@@ -9,6 +9,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * @Class : Message
+ * @Description : 메세지도메인에 대한 엔티티
+ **/
 @Getter
 @Setter
 @Entity

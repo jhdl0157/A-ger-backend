@@ -24,6 +24,10 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @Class : ProductController
+ * @Description : 상품도메인에 대한 컨트롤러
+ **/
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -32,12 +36,16 @@ import java.util.List;
 public class ProductController {
 
     private final ProductServiceImpl productService;
-    private final AuthServiceImpl authService;
     private final AccountServiceImpl accountService;
     private final ResponseService responseService;
     private final UploadServiceImpl uploadService;
 
-
+    /**
+     * @Method : findProductById
+     * @Description : 상품아이디로 상품 조회
+     * @Parameter : [accessToken, productId]
+     * @Return : ResponseEntity<SingleResult<ProductResponse>>
+     **/
     @GetMapping("/{productId}")
     public ResponseEntity<SingleResult<ProductResponse>> findProductById(
             @RequestHeader("Authorization") String accessToken,
@@ -51,6 +59,12 @@ public class ProductController {
         return new ResponseEntity<>(responseService.getSingleResult(productResponse), HttpStatus.OK);
     }
 
+    /**
+     * @Method : createProduct
+     * @Description : 상품정보 생성
+     * @Parameter : [accessToken, multipartFile, productRequest, bindingResult]
+     * @Return : ResponseEntity<SingleResult<ProductResponse>>
+     **/
     @PostMapping
     public ResponseEntity<SingleResult<ProductResponse>> createProduct(
             @RequestHeader("Authorization") String accessToken,
@@ -66,6 +80,12 @@ public class ProductController {
                 (productResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method : updateProduct
+     * @Description : 상품 정보 수정
+     * @Parameter : [accessToken, productId, multipartFile, productUpdateRequest, bindingResult]
+     * @Return : ResponseEntity<SingleResult<ProductResponse>>
+     **/
     @PatchMapping("/{productId}")
     public ResponseEntity<SingleResult<ProductResponse>> updateProduct(
             @RequestHeader("Authorization") String accessToken,
@@ -78,6 +98,12 @@ public class ProductController {
         return new ResponseEntity<>(responseService.getSingleResult(productResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method : deleteProductById
+     * @Description : 상품 삭제
+     * @Parameter : [accessToken, productId]
+     * @Return : ResponseEntity<CommonResult>
+     **/
     @DeleteMapping("/{productId}")
     public ResponseEntity<CommonResult> deleteProductById(
             @RequestHeader("Authorization") String accessToken,

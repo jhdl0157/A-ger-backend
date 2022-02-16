@@ -11,6 +11,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @Class : ProductResponse
+ * @Description : 상품도메인에 대한 Response DTO
+ **/
 @Data
 @Builder
 public class ProductResponse {
@@ -27,6 +31,12 @@ public class ProductResponse {
     boolean isOwner = true;
     List<Url> urlList;
 
+    /**
+     * @Method : toProductResponse
+     * @Description : 상품정보 데이터 응답객체화
+     * @Parameter : [product, account]
+     * @Return : ProductResponse
+     **/
     public static ProductResponse toProductResponse(Product product, Account account) {
         return ProductResponse.builder()
                 .productId(product.getProductId())

@@ -34,6 +34,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 
+/**
+ * @Class : ProductServiceImpl
+ * @Description : 상품도메인에 대한 서비스
+ **/
 @Service
 @Slf4j
 @Transactional
@@ -41,20 +45,29 @@ import java.util.*;
 public class ProductServiceImpl {
 
     private final ProductRepository productRepository;
-    private final UrlRepository urlRepository;
     private final AccountServiceImpl accountService;
     private final UploadServiceImpl uploadService;
-    @Value("${cloud.aws.s3.bucket.url}")
-    private String defaultUrl;
+
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
-    private final AmazonS3Client amazonS3Client;
     private final RedisTemplate redisTemplate;
 
+    /**
+     * @Method : findProductAllByCreatedAtDesc
+     * @Description : 최신순으로 상품 페이징 처리
+     * @Parameter : [category, keyword, pageable]
+     * @Return : Slice<ProductThumbResponse>
+     **/
     public Slice<ProductThumbResponse> findProductAllByCreatedAtDesc(Category category, String keyword, Pageable pageable) {
         return productRepository.findAllProductPageableOrderByCreatedAtDesc(category, keyword, pageable);
     }
 
+    /**
+     * @Method : createProduct
+     * @Description : 상품데이터 생성
+     * @Parameter : [accessToken, productRequest, multipartFile]
+     * @Return : ProductResponse
+     **/
     public ProductResponse createProduct(String accessToken,
                                          ProductRequest productRequest,
                                          List<MultipartFile> multipartFile) throws IOException {
@@ -66,6 +79,12 @@ public class ProductServiceImpl {
         return ProductResponse.toProductResponse(product, account);
     }
 
+    /**
+     * @Method : findProductById
+     * @Description : 상품아이디로 상품을 조회(캐싱처리)
+     * @Parameter : [productId]
+     * @Return : Product
+     **/
     @Cacheable(value = "product")
     public Product findProductById(Long productId) {
         return productRepository.addViewCnt(productId);
@@ -84,6 +103,12 @@ public class ProductServiceImpl {
         log.info("value:{}", valueOperations.get(key));
     }
 
+    /**
+     * @Method : deleteViewCntCacheFromRedis
+     * @Description : 레디스의 상품 조회수를 일정 시간마다 삭제
+     * @Parameter : []
+     * @Return : null
+     **/
     @Scheduled(cron = "0 0/1 * * * ?")
     public void deleteViewCntCacheFromRedis() {
         Set<String> redisKeys = redisTemplate.keys("productViewCnt*");
@@ -98,10 +123,16 @@ public class ProductServiceImpl {
         }
     }
 
+    /**
+     * @Method : updateProductById
+     * @Description : 상품데이터 수정
+     * @Parameter : [productId, accessToken, multipartFile, productUpdateRequest]
+     * @Return : ProductResponse
+     **/
     public ProductResponse updateProductById(Long productId,
                                              String accessToken,
                                              List<MultipartFile> multipartFile,
-                                             ProductUpdateRequest productUpdateRequest) throws IOException {
+                                             ProductUpdateRequest productUpdateRequest) {
         Product productById = findProductById(productId);
         Account accountByAccessToken = accountService.findAccountByAccessToken(accessToken);
         if (!(productById.getAccount().equals(accountByAccessToken))) {
@@ -120,11 +151,17 @@ public class ProductServiceImpl {
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
-        Product toProductUpdate = productUpdateRequest.toProductUpdate(productById, accountByAccessToken, updateFileImageUrlList);
+        Product toProductUpdate = productUpdateRequest.toProductUpdate(productById, updateFileImageUrlList);
         productRepository.save(toProductUpdate);
         return ProductResponse.toProductResponse(toProductUpdate, accountByAccessToken);
     }
 
+    /**
+     * @Method : deleteProductById
+     * @Description : 상품 데이터 삭제
+     * @Parameter : [productId, accessToken]
+     * @Return : null
+     **/
     public void deleteProductById(Long productId, String accessToken) {
         Product productById = productRepository.findById(productId).orElseThrow(NotFoundException::new);
         if (!(productById.getAccount().getAccountId().equals(accountService.findAccountByAccessToken(accessToken).getAccountId()))) {
@@ -134,11 +171,23 @@ public class ProductServiceImpl {
         productRepository.deleteById(productId);
     }
 
+    /**
+     * @Method : validateFileExists
+     * @Description : 비어 있는 이미지 리스트 검증
+     * @Parameter : [file]
+     * @Return : null
+     **/
     public void validateFileExists(List<MultipartFile> file) {
         if (file.isEmpty())
             throw new InvaildUploadException();
     }
 
+    /**
+     * @Method : validateUploadForm
+     * @Description : 상품정보 입력값 검증
+     * @Parameter : [bindingResult]
+     * @Return : null
+     **/
     public void validateUploadForm(BindingResult bindingResult) {
         if (bindingResult.getErrorCount() >= 3) throw new InvaildFormException();
         if (bindingResult.hasErrors()) {
