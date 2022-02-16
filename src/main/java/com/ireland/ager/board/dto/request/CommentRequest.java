@@ -5,6 +5,10 @@ import com.ireland.ager.board.entity.Board;
 import com.ireland.ager.board.entity.Comment;
 import lombok.Data;
 
+/**
+ * @Class : CommentRequest
+ * @Description : 댓글 도메인에 대한 Request DTO
+ **/
 @Data
 public class CommentRequest {
 
