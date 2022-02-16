@@ -10,13 +10,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@Builder
-
 /**
  * @Class : BoardResponse
  * @Description : 게시판 도메인에 대한 Response DTO
  **/
+@Data
+@Builder
 public class BoardResponse {
     Long boardId;
     String title;
