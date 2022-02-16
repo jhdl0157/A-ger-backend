@@ -9,6 +9,10 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
+/**
+* @Class : Review
+* @Description : 리뷰 도메인에 대한 엔티티
+**/
 @Entity
 @Getter
 @Setter
@@ -31,6 +35,12 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "seller_id")
     private Account sellerId;
 
+    /**
+    * @Method : addAccount
+    * @Description : 계정 추가
+    * @Parameter : [account]
+    * @Return : null
+    **/
     public void addAccount(Account account) {
         this.sellerId = account;
     }

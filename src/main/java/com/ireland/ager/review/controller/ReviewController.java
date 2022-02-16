@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Class : ReviewController
+ * @Description : 리뷰 도메인에 대한 컨트롤러
+ **/
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/review")
@@ -19,12 +23,12 @@ public class ReviewController {
     private final ReviewServiceImpl reviewService;
     private final ResponseService responseService;
 
-    @GetMapping("/list/{accountId}")
-    public ResponseEntity<ListResult<ReviewResponse>> getReviewList(
-            @PathVariable Long accountId) {
-        return new ResponseEntity<>(responseService.getListResult(reviewService.findReviewList(accountId)), HttpStatus.CREATED);
-    }
-
+    /**
+     * @Method : postReview
+     * @Description : 리뷰 등록
+     * @Parameter : [accessToken, roomId, reviewRequest]
+     * @Return : ResponseEntity<SingleResult<ReviewResponse>>
+     **/
     @PostMapping("/{roomId}")
     public ResponseEntity<SingleResult<ReviewResponse>> postReview(
             @RequestHeader("Authorization") String accessToken,
