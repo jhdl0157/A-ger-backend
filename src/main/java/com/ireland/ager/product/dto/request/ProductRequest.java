@@ -12,6 +12,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Class : ProductRequest
+ * @Description : 상품도메인에 대한 Request DTO
+ **/
 @Data
 public class ProductRequest {
     @NotBlank(message = "3010")
@@ -24,6 +28,12 @@ public class ProductRequest {
     @NotBlank(message = "3040")
     String category;
 
+    /**
+     * @Method : toProduct
+     * @Description : 상품정보 데이터 객체화
+     * @Parameter : [account, uploadImageUrl, thumbNailUrl]
+     * @Return : Product
+     **/
     public Product toProduct(Account account,
                              List<String> uploadImageUrl, String thumbNailUrl) {
         Product product = new Product();

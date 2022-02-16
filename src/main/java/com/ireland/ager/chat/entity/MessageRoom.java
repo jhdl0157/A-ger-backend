@@ -12,6 +12,10 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * @Class : MessageRoom
+ * @Description : 메세지룸도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -40,25 +44,24 @@ public class MessageRoom extends BaseEntity implements Serializable {
     private Account buyerId;
 
     @Enumerated(EnumType.STRING)
-    private ReviewStatus reviewStatus=ReviewStatus.NOTSALE;
+    private ReviewStatus reviewStatus = ReviewStatus.NOTSALE;
 
     @Enumerated(EnumType.STRING)
-    private RoomStatus roomStatus=RoomStatus.FULL;
+    private RoomStatus roomStatus = RoomStatus.FULL;
 
-    public void toCreateMessageRoom(Product product,Account buyerId) {
+    public void toCreateMessageRoom(Product product, Account buyerId) {
         this.setBuyerId(buyerId);
         this.setSellerId(product.getAccount());
         this.setProduct(product);
     }
+
     public void updateRoomStatus(Account account) {
-        if(this.getRoomStatus().equals(RoomStatus.EMPTY)) return;
-        if(this.getRoomStatus().equals(RoomStatus.FULL)) {
-            this.setRoomStatus((this.getSellerId().equals(account)? RoomStatus.SELLEROUT:RoomStatus.BUYEROUT));
-        }
-        else if(this.getRoomStatus().equals(RoomStatus.SELLEROUT) && this.getBuyerId().equals(account)) {
+        if (this.getRoomStatus().equals(RoomStatus.EMPTY)) return;
+        if (this.getRoomStatus().equals(RoomStatus.FULL)) {
+            this.setRoomStatus((this.getSellerId().equals(account) ? RoomStatus.SELLEROUT : RoomStatus.BUYEROUT));
+        } else if (this.getRoomStatus().equals(RoomStatus.SELLEROUT) && this.getBuyerId().equals(account)) {
             this.setRoomStatus(RoomStatus.EMPTY);
-        }
-        else if(this.getRoomStatus().equals(RoomStatus.BUYEROUT) && this.getSellerId().equals(account)) { //buyerout
+        } else if (this.getRoomStatus().equals(RoomStatus.BUYEROUT) && this.getSellerId().equals(account)) { //buyerout
             this.setRoomStatus(RoomStatus.EMPTY);
         }
     }

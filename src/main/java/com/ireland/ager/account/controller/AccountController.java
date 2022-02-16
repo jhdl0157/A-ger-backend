@@ -36,10 +36,12 @@ public class AccountController {
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
     }
 
+
     @GetMapping("/login")
     public ResponseEntity<SingleResult<MyAccountResponse>> getTokenAndJoinOrLogin(@RequestParam("code") String code) {
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
     }
+
 
     @GetMapping("/logout")
     public ResponseEntity<CommonResult> logout(@RequestHeader("Authorization") String accessToken) {

@@ -13,6 +13,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
+/**
+ * @Class : ProductUpdateRequest
+ * @Description : 상품도메인에 대한 UpdateRequest DTO
+ **/
 @Slf4j
 @Data
 public class ProductUpdateRequest {
@@ -28,7 +32,13 @@ public class ProductUpdateRequest {
     @NotBlank(message = "3050")
     String status;
 
-    public Product toProductUpdate(Product product, Account account,
+    /**
+     * @Method : toProductUpdate
+     * @Description : 상품수정정보 데이터 객체화
+     * @Parameter : [product, uploadImageUrl]
+     * @Return : Product
+     **/
+    public Product toProductUpdate(Product product,
                                    List<String> uploadImageUrl) {
         for (String str : uploadImageUrl) {
             Url url = new Url();

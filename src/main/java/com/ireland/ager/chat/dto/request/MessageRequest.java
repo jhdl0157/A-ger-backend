@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * @Class : MessageRequest
+ * @Description : 메세지도메인에 대한 Request DTO
+ **/
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,6 +22,12 @@ public class MessageRequest implements Serializable {
     private Long senderId;
     private String message;
 
+    /**
+     * @Method : toMessage
+     * @Description : 메세지 정보 데이터 객체화
+     * @Parameter :  [messageDto, messageRoom]
+     * @Return : Message
+     **/
     public static Message toMessage(MessageRequest messageDto, MessageRoom messageRoom) {
         return Message.builder()
                 .message(messageDto.getMessage())

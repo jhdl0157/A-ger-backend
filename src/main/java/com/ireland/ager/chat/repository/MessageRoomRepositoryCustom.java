@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface MessageRoomRepositoryCustom {
-    Slice<MessageSummaryResponse> findMessageRoomsBySellerIdOrBuyerId(Account sellerId, Account buyerId,Pageable pageable);
+    Slice<MessageSummaryResponse> findMessageRoomsBySellerIdOrBuyerId(Account sellerId, Account buyerId, Pageable pageable);
 }
