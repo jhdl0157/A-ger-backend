@@ -3,7 +3,10 @@ package com.ireland.ager.main.common;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// enum으로 api 요청 결과에 대한 code, message를 정의합니다.
+/**
+ * @Class : CommonResponse
+ * @Description : enum으로 api 요청 결과에 대한 code, message를 정의
+ **/
 @Getter
 @AllArgsConstructor
 public enum CommonResponse {
@@ -30,10 +33,11 @@ public enum CommonResponse {
     INVALIDFORM(-3060, "입력값이 하나도 없습니다."),
     INVALIDDATA(-3100, "입력 값이 잘못되었습니다."),
     INVALIDFILEEXTENSION(-3200, "확장자가 잘못되었습니다."),
-    INVALIDBOARDTITLE(-3110,"게시글 제목이 없습니다."),
-    INVALIDBOARDDETAIL(-3130,"내용이 없습니다."),
+    INVALIDBOARDTITLE(-3110, "게시글 제목이 없습니다."),
+    INVALIDBOARDDETAIL(-3130, "내용이 없습니다."),
     DUPLICATEREVIEW(-4000, "이미 리뷰를 작성하셨습니다.");
 
     private final int code;
+
     private final String msg;
 }
