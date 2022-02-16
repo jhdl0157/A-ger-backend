@@ -20,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * @Class : ExceptionAdvice
+ * @Description : 도메인에 대한 공통 에러 처리
+ **/
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionAdvice {
@@ -126,11 +130,13 @@ public class ExceptionAdvice {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.DUPLICATEREVIEW);
         return new ResponseEntity<>(commonResult, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(InvalidBoardTitleException.class)
     public ResponseEntity<CommonResult> InvalidBoardTitleException(InvalidBoardTitleException e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.INVALIDBOARDTITLE);
         return new ResponseEntity<>(commonResult, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(InvalidBoardDetailException.class)
     public ResponseEntity<CommonResult> InvalidBoardTitleException(InvalidBoardDetailException e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.INVALIDBOARDDETAIL);

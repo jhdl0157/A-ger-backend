@@ -15,27 +15,40 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
+/**
+ * @Class : RedisConfig
+ * @Description : 레디스 설정 클래스
+ **/
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
-
-    @Value("${spring.redis.port}")
-    private String port;
     @Value("${spring.redis.host}")
     private String host;
     @Value("${spring.redis.timeout}")
     private Long timeout;
 
+    /**
+     * @Method : lettuceConnectionFactory
+     * @Description : 레튜스 설정 빈 등록
+     * @Parameter : []
+     * @Return : LettuceConnectionFactory
+     **/
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
         LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
                 .commandTimeout(Duration.ZERO)
                 .shutdownTimeout(Duration.ZERO)
                 .build();
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, Integer.parseInt(port));
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, 6379);
         return new LettuceConnectionFactory(redisStandaloneConfiguration, lettuceClientConfiguration);
     }
 
     @Bean
+    /**
+     * @Method : redisTemplate
+     * @Description : 레디스 템플릿 빈 등록
+     * @Parameter : []
+     * @Return : RedisTemplate<?, ?>
+     **/
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
@@ -44,6 +57,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         return template;
     }
 
+    /**
+     * @Method : cacheManager
+     * @Description : 캐시 매니저 빈 등록
+     * @Parameter : []
+     * @Return : CacheManager
+     **/
     @Bean
     @Override
     public CacheManager cacheManager() {

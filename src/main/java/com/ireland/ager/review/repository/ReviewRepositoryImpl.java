@@ -37,7 +37,6 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         }
         List<ReviewResponse> content = new ArrayList<>(ReviewResponse.toReviewResponse(reviewQuery.fetch()));
         boolean hasNext = false;
-        //마지막 페이지는 사이즈가 항상 작다.
         if (content.size() > pageable.getPageSize()) {
             content.remove(pageable.getPageSize());
             hasNext = true;
