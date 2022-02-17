@@ -75,11 +75,22 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Override
     public Slice<ProductThumbResponse> findSellProductsByAccountId(Long accountId, Pageable pageable) {
-        JPAQuery<Product> productQuery = queryFactory
-                .selectFrom(product)
+        List<Long> ids = queryFactory
+                .select(product.productId)
+                .from(product)
                 .where(product.account.accountId.eq(accountId))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1); //limit보다 한 개 더 들고온다.
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return new SliceImpl<>(new ArrayList<>(), pageable, true);
+        }
+
+        JPAQuery<Product> productQuery = queryFactory
+                .selectFrom(product)
+                .where(product.productId.in(ids));
+
         for (Sort.Order o : pageable.getSort()) {
             PathBuilder pathBuilder = new PathBuilder(product.getType(), product.getMetadata());
             productQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
