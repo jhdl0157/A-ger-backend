@@ -16,13 +16,13 @@ The used trading platform for student who living in Ireland🍀
 ### 🙋‍♂️ 팀원
 ------
 
-|            | <center>심영석               | <center>이재호              | <center>강완수                   | 
-|------------|:---------------------------|:---------------------------|:-------------------------------|
-| **Github** | [<img src="https://avatars.githubusercontent.com/u/46801877?v=4" width="230px;" alt=""/>](https://github.com/Supreme-YS) | [<img src="https://avatars.githubusercontent.com/u/72914519?v=4" width="230px;" alt=""/>](https://github.com/jhdl0157) | [<img src="https://avatars.githubusercontent.com/u/58693617?v=4" width="230px;" alt=""/>](https://github.com/dhkstnaos) |
-| **E-mail** | dudtjr1225@gmail.com          | jhdl0157@naver.com          | dhkstnaos@gmail.com        |
+|            | <center>심영석               | <center>이재호              | <center>강완수                | <center>임가연                |    
+|------------|:---------------------------|:---------------------------|:-------------------------------|:-------------------------------|
+| **Github** | [<img src="https://avatars.githubusercontent.com/u/46801877?v=4" width="230px;" alt=""/>](https://github.com/Supreme-YS) | [<img src="https://avatars.githubusercontent.com/u/72914519?v=4" width="230px;" alt=""/>](https://github.com/jhdl0157) | [<img src="https://avatars.githubusercontent.com/u/58693617?v=4" width="230px;" alt=""/>](https://github.com/dhkstnaos) | [<img src="https://avatars.githubusercontent.com/u/58693617?v=4" width="230px;" alt=""/>](https://github.com/dhkstnaos) |
+| **E-mail** | dudtjr1225@gmail.com          | jhdl0157@naver.com          | dhkstnaos@gmail.com        | ds5anc900@naver.com  |
 | **Github** | https://github.com/Supreme-YS  | https://github.com/jhdl0157 | https://github.com/dhkstnaos    |
-| **Blog**   |         https://supreme-ys.tistory.com/                    |         https://thisisthat-it.tistory.com/                    |        https://crazy-horse.tistory.com/                    |
-| **Position**   | <center>Backend | <center>Backend | <center>Backend | 
+| **Blog**   |         https://supreme-ys.tistory.com/                    |         https://thisisthat-it.tistory.com/                    |        https://crazy-horse.tistory.com/                    |https://limgayeon.imweb.me/ |
+| **Position**   | <center>Backend | <center>Backend | <center>Backend | <center>Designer |
  
 
 ------
