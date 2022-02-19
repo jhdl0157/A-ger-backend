@@ -23,6 +23,7 @@ import java.io.IOException;
 @RequestMapping("/api/account")
 @CrossOrigin(value = {"*"}, maxAge = 6000)
 public class AccountController {
+
     private final AccountServiceImpl accountService;
 
     private final AuthServiceImpl authService;
