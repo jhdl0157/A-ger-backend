@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
+/**
+ * @Class : CommentServiceImpl
+ * @Description : 댓글 도메인에 대한 서비스
+ **/
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +31,12 @@ public class CommentServiceImpl {
     private final CommentRepository commentRepository;
     private final AccountServiceImpl accountService;
 
+    /**
+     * @Method : saveComment
+     * @Description : 댓글 저장
+     * @Parameter : [accessToken, boardId, commentRequest]
+     * @Return : CommentResponse
+     **/
     public CommentResponse saveComment(String accessToken, Long boardId, CommentRequest commentRequest) {
         Board board = boardRepository.findById(boardId).orElseThrow(NotFoundException::new);
         Account account = accountService.findAccountByAccessToken(accessToken);
@@ -34,6 +44,12 @@ public class CommentServiceImpl {
         return CommentResponse.toCommentResponse(newComment);
     }
 
+    /**
+     * @Method : updateComment
+     * @Description : 댓글 수정
+     * @Parameter : [accessToken, boardId, commentRequest]
+     * @Return : CommentResponse
+     **/
     public CommentResponse updateComment(String accessToken, Long commentId, CommentRequest commentRequest) {
         Comment presentComment = commentRepository.findById(commentId).orElseThrow(NotFoundException::new);
         Account account = accountService.findAccountByAccessToken(accessToken);
@@ -44,6 +60,12 @@ public class CommentServiceImpl {
         return CommentResponse.toCommentResponse(updateComment);
     }
 
+    /**
+     * @Method : deleteComment
+     * @Description : 댓글 삭제
+     * @Parameter : [accessToken, commentId]
+     * @Return : null
+     **/
     public void deleteComment(String accessToken, Long commentId) throws IOException {
         Comment presentComment = commentRepository.findById(commentId).orElseThrow(NotFoundException::new);
         Account account = accountService.findAccountByAccessToken(accessToken);

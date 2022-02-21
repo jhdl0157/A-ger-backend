@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * @Class : ReviewServiceImpl
+ * @Description : 리뷰 도메인에 대한 서비스
+ **/
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -29,26 +33,25 @@ public class ReviewServiceImpl {
     private final MessageRoomRepository messageRoomRepository;
     private final ReviewRepository reviewRepository;
     private final AccountServiceImpl accountService;
-    private final AccountRepository accountRepository;
+
+    /**
+     * @Method : postReview
+     * @Description : 리뷰 등록
+     * @Parameter : [roomId, reviewRequest, accessToken]
+     * @Return : ReviewResponse
+     **/
     public ReviewResponse postReview(Long roomId, ReviewRequest reviewRequest, String accessToken) {
-        MessageRoom messageRoom=messageRoomRepository.findById(roomId).orElseThrow(NotFoundException::new);
+        MessageRoom messageRoom = messageRoomRepository.findById(roomId).orElseThrow(NotFoundException::new);
         Account accountByAccessToken = accountService.findAccountByAccessToken(accessToken);
         if (!accountByAccessToken.getAccountId().equals(messageRoom.getBuyerId().getAccountId())) {
             throw new UnAuthorizedAccessException();
         }
-        if(messageRoom.getReviewStatus().equals(ReviewStatus.SALE)){
-            Review review=ReviewRequest.toReview(reviewRequest,messageRoom.getSellerId(),messageRoom.getProduct(),accountByAccessToken);
+        if (messageRoom.getReviewStatus().equals(ReviewStatus.SALE)) {
+            Review review = ReviewRequest.toReview(reviewRequest, messageRoom.getSellerId(), messageRoom.getProduct(), accountByAccessToken);
             messageRoom.setReviewStatus(ReviewStatus.POST);
             messageRoomRepository.save(messageRoom);
             reviewRepository.save(review);
             return ReviewResponse.toReviewResponse(review);
-        }
-        else throw new DuplicateReviewException();
-    }
-
-    public List<ReviewResponse> findReviewList(Long accountId) {
-        Account account=accountRepository.findById(accountId).orElseThrow(NotFoundException::new);
-        List<Review> reviewList=reviewRepository.findAllBySellerId(account);
-        return ReviewResponse.toReviewResponse(reviewList);
+        } else throw new DuplicateReviewException();
     }
 }

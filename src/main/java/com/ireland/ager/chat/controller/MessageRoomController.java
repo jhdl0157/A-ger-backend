@@ -15,14 +15,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Class : MessageRoomController
+ * @Description : 메세지룸도메인에 대한 컨트롤러
+ **/
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/room")
 public class MessageRoomController {
     private final MessageService messageService;
-    private final AuthServiceImpl authService;
     private final ResponseService responseService;
 
+    /**
+     * @Method : searchAllRoomList
+     * @Description : 채팅방 리스트 조회
+     * @Parameter : [accessToken, pageable]
+     * @Return : ResponseEntity<SliceResult<MessageSummaryResponse>>
+     **/
     @GetMapping
     public ResponseEntity<SliceResult<MessageSummaryResponse>> searchAllRoomList(
             @RequestHeader("Authorization") String accessToken
@@ -32,6 +41,12 @@ public class MessageRoomController {
                 messageService.findRoomByAccessToken(splitToken[1], pageable)), HttpStatus.OK);
     }
 
+    /**
+     * @Method : roomEnter
+     * @Description : 메세지룸 접속
+     * @Parameter : [roomId, accessToken]
+     * @Return : ResponseEntity<SingleResult<MessageDetailsResponse>>
+     **/
     @GetMapping("/{roomId}")
     public ResponseEntity<SingleResult<MessageDetailsResponse>> roomEnter(
             @PathVariable Long roomId,
@@ -42,6 +57,12 @@ public class MessageRoomController {
         return new ResponseEntity<>(responseService.getSingleResult(messageRoom), HttpStatus.OK);
     }
 
+    /**
+     * @Method : insertRoom
+     * @Description : 메세지룸 생성
+     * @Parameter : [productId, accessToken]
+     * @Return : ResponseEntity<SingleResult<RoomCreateResponse>>
+     **/
     @PostMapping("/{productId}")
     public ResponseEntity<SingleResult<RoomCreateResponse>> insertRoom(
             @PathVariable Long productId,
@@ -52,6 +73,12 @@ public class MessageRoomController {
         return new ResponseEntity<>(responseService.getSingleResult(roomCreateResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method : roomDelete
+     * @Description : 메세지룸 삭제
+     * @Parameter : [roomId, accessToken]
+     * @Return : ResponseEntity<CommonResult>
+     **/
     @DeleteMapping("/{roomId}")
     public ResponseEntity<CommonResult> roomDelete(
             @PathVariable Long roomId,

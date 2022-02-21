@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @Class : AccountServiceImpl
+ * @Description : 계정 도메인에 대한 서비스
+ **/
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,20 +34,44 @@ public class AccountServiceImpl {
     private final RedisTemplate redisTemplate;
     private final UploadServiceImpl uploadService;
 
+    /**
+     * @Method : findAccountByAccountEmail
+     * @Description : 이메일로 계정 조회
+     * @Parameter : [accountEmail]
+     * @Return : Account
+     **/
     public Account findAccountByAccountEmail(String accountEmail) {
         return accountRepository.findAccountByAccountEmail(accountEmail).orElse(null);
     }
 
+    /**
+     * @Method : findAccountByAccessToken
+     * @Description : 액세스 토큰으로 계정 조회
+     * @Parameter : [accessToken]
+     * @Return : Account
+     **/
     @Cacheable("account")
     public Account findAccountByAccessToken(String accessToken) {
         return accountRepository.findAccountByAccessToken(accessToken).orElseThrow(NotFoundException::new);
     }
 
+    /**
+     * @Method : insertAccount
+     * @Description : 회원 가입
+     * @Parameter : [newAccount]
+     * @Return : MyAccountResponse
+     **/
     public MyAccountResponse insertAccount(Account newAccount) {
-        accountRepository.save(newAccount);
-        return MyAccountResponse.toAccountResponse(newAccount);
+        Account saveAccount = accountRepository.save(newAccount);
+        return MyAccountResponse.toAccountResponse(saveAccount);
     }
 
+    /**
+     * @Method : updateAccount
+     * @Description : 계정 정보 수정
+     * @Parameter : [accessToken, accountId, accountUpdateRequest, multipartFile]
+     * @Return : MyAccountResponse
+     **/
     public MyAccountResponse updateAccount(String accessToken, Long accountId,
                                            AccountUpdateRequest accountUpdateRequest,
                                            MultipartFile multipartFile) throws IOException {
@@ -61,13 +89,17 @@ public class AccountServiceImpl {
         return MyAccountResponse.toAccountResponse(updatedAccount);
     }
 
+    /**
+     * @Method : deleteAccount
+     * @Description : 계정 삭제
+     * @Parameter : [accessToken, accountId]
+     * @Return : null
+     **/
     public void deleteAccount(String accessToken, Long accountId) {
         Account accountByAccessToken = findAccountByAccessToken(accessToken);
         if (!(accountByAccessToken.getAccountId().equals(accountId))) {
-            // 삭제하고자 하는 사람과 현재 토큰 주인이 다르면 False
             throw new UnAuthorizedAccessException();
         }
-        //HINT: redis 최근 검색어도 함께 추가
         String key = "search::" + accountId;
         redisTemplate.delete(key);
         accountRepository.deleteById(accountId);

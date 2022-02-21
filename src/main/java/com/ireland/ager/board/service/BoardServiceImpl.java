@@ -31,6 +31,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 
+/**
+ * @Class : BoardServiceImpl
+ * @Description : 게시판 도메인에 대한 서비스
+ **/
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -41,6 +45,12 @@ public class BoardServiceImpl {
     private final UploadServiceImpl uploadService;
     private final RedisTemplate redisTemplate;
 
+    /**
+     * @Method : createPost
+     * @Description : 게시물 생성
+     * @Parameter : [accessToken, boardRequest, multipartFile]
+     * @Return : BoardResponse
+     **/
     public BoardResponse createPost(String accessToken,
                                     BoardRequest boardRequest,
                                     List<MultipartFile> multipartFile) throws IOException {
@@ -50,6 +60,12 @@ public class BoardServiceImpl {
         return BoardResponse.toBoardResponse(newPost, account);
     }
 
+    /**
+     * @Method : updatePost
+     * @Description : 게시물 수정
+     * @Parameter : [accessToken, boardId, boardRequest, multipartFile]
+     * @Return : BoardResponse
+     **/
     public BoardResponse updatePost(String accessToken,
                                     Long boardId,
                                     BoardRequest boardRequest,
@@ -74,6 +90,12 @@ public class BoardServiceImpl {
         return BoardResponse.toBoardResponse(toBoardUpdate, account);
     }
 
+    /**
+     * @Method : deletePost
+     * @Description : 게시물 삭제
+     * @Parameter : [accessToken, boardId]
+     * @Return : null
+     **/
     public void deletePost(String accessToken, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(NotFoundException::new);
         Account account = accountService.findAccountByAccessToken(accessToken);
@@ -84,11 +106,23 @@ public class BoardServiceImpl {
         boardRepository.deleteById(board.getBoardId());
     }
 
+    /**
+     * @Method : findPostById
+     * @Description : 게시물 아이디로 게시물 조회
+     * @Parameter : [boardId]
+     * @Return : Board
+     **/
     @Cacheable(value = "board")
     public Board findPostById(Long boardId) {
         return boardRepository.addViewCnt(boardId);
     }
 
+    /**
+     * @Method : addViewCntToRedis
+     * @Description : 레디스 서버 게시물 조회수 증가
+     * @Parameter : [boardId]
+     * @Return : null
+     **/
     public void addViewCntToRedis(Long boardId) {
         String key = "boardViewCnt::" + boardId;
 
@@ -102,6 +136,12 @@ public class BoardServiceImpl {
             valueOperations.increment(key);
     }
 
+    /**
+     * @Method : deleteViewCntCacheFromRedis
+     * @Description : 레디스 서버 조회수 캐시 삭제
+     * @Parameter : []
+     * @Return : null
+     **/
     @Scheduled(cron = "0 0/1 * * * ?")
     public void deleteViewCntCacheFromRedis() {
         Set<String> redisKeys = redisTemplate.keys("boardViewCnt*");
@@ -116,15 +156,33 @@ public class BoardServiceImpl {
         }
     }
 
+    /**
+     * @Method : findBoardAllByCreatedAtDesc
+     * @Description : 모든 게시물 내림차순 조회
+     * @Parameter : [keyword, pageable]
+     * @Return : Slice<BoardSummaryResponse>
+     **/
     public Slice<BoardSummaryResponse> findBoardAllByCreatedAtDesc(String keyword, Pageable pageable) {
         return boardRepository.findAllBoardPageableOrderByCreatedAtDesc(keyword, pageable);
     }
 
+    /**
+     * @Method : validateFileExists
+     * @Description : 이미지 파일 유효성 검증
+     * @Parameter : [file]
+     * @Return : null
+     **/
     public void validateFileExists(List<MultipartFile> file) {
         if (file.isEmpty())
             throw new InvaildUploadException();
     }
 
+    /**
+     * @Method : validateUploadForm
+     * @Description : 게시물 업로드 유효성 검증
+     * @Parameter : [bindingResult]
+     * @Return : null
+     **/
     public void validateUploadForm(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(objectError -> {

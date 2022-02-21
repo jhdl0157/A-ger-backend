@@ -13,6 +13,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * @Class : Account
+ * @Description : 계정 도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -30,11 +34,10 @@ public class Account extends BaseEntity implements Serializable {
     String userName;
     String profileImageUrl;
     String accessToken;
-    String refreshToken;
     @Formula("(select avg(r.stars) from review r where r.seller_id=account_id)")
     Double avgStar;
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "account")
-    Set<Product> products=new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
+    Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "sellerId", cascade = CascadeType.ALL)
     private Set<Review> reviews = new LinkedHashSet<>();

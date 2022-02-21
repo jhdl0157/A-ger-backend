@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.ireland.ager.chat.entity.QMessage.message1;
 
+
 @Repository
 @RequiredArgsConstructor
 public class MessageRepositoryImpl implements MessageRepositoryCustom {

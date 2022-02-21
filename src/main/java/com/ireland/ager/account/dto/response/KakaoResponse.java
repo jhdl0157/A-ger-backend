@@ -3,6 +3,10 @@ package com.ireland.ager.account.dto.response;
 import com.ireland.ager.account.entity.Account;
 import lombok.Data;
 
+/**
+ * @Class : KakaoResponse
+ * @Description : 카카오 도메인에 대한 Response DTO
+ **/
 @Data
 public class KakaoResponse {
 
@@ -27,17 +31,6 @@ public class KakaoResponse {
         private Boolean is_email_valid;
         private Boolean is_email_verified;
         private String email;
-        /*
-        private String has_age_range;
-        private boolean age_range_needs_agreement;
-        private String age_range;
-        private boolean birthday_needs_agreement;
-        private String birthday;
-        private String birthday_type;
-        private boolean gender_needs_agreement;
-        private boolean has_gender;
-        private String gender;
-         */
 
         @Data
         public class Profile {
@@ -47,8 +40,13 @@ public class KakaoResponse {
         }
     }
 
-    //KakaoUserRes->Account
-    public Account toAccount(String accessToken, String refreshToken) {
+    /**
+     * @Method : toAccount
+     * @Description : 카카오 계정 정보 데이터 응답 객체화
+     * @Parameter : [accessToken, refreshToken]
+     * @Return : Account
+     **/
+    public Account toAccount(String accessToken) {
         Account account = new Account();
         if (this.kakao_account.email == null || this.kakao_account.email.equals(""))
             account.setAccountEmail(String.valueOf(this.id));
@@ -57,7 +55,6 @@ public class KakaoResponse {
         account.setUserName(this.kakao_account.profile.nickname);
         account.setProfileImageUrl(this.kakao_account.profile.profile_image_url);
         account.setAccessToken(accessToken);
-        account.setRefreshToken(refreshToken);
         return account;
     }
 }

@@ -15,18 +15,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+/**
+ * @Class : KafkaConsumerService
+ * @Description : 메세지도메인에 대한 KafkaConsumerService
+ **/
 public class KafkaConsumerService {
     private final SimpMessagingTemplate template;
     private final MessageRepository messageRepository;
     private final MessageService messageService;
-    //여기서 Producer에서 생성된 메시지 받고 converAndSend로 메시지를 보낸다..
-    @KafkaListener(topics =KafkaConstants.KAFKA_TOPIC, groupId = KafkaConstants.GROUP_ID)
+
+    /**
+     * @Method : listen
+     * @Description : Producer에서 생성된 메시지 받고 converAndSend로 메시지 전송
+     * @Parameter : [message]
+     * @Return : null
+     **/
+    @KafkaListener(topics = KafkaConstants.KAFKA_TOPIC, groupId = KafkaConstants.GROUP_ID)
     public void listen(MessageRequest message) {
         log.info("sending via kafka listener..");
         //여기서 MessageRequest를 Message로 변환하고 정보 전달을 한다,,?
         MessageRoom messageRoom = messageService.findByRoomId(message.getRoomId());
         messageRepository.save(message.toMessage(message, messageRoom));
-        template.convertAndSend("/topic/group/"+messageRoom.getRoomId(), message);
+        template.convertAndSend("/topic/group/" + messageRoom.getRoomId(), message);
     }
 
 }

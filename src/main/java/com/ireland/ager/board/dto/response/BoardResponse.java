@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Class : BoardResponse
+ * @Description : 게시판 도메인에 대한 Response DTO
+ **/
 @Data
 @Builder
 public class BoardResponse {
@@ -22,6 +26,12 @@ public class BoardResponse {
     LocalDateTime updateAt;
     boolean isOwner;
 
+    /**
+     * @Method : toBoardResponse
+     * @Description : 게시판 데이터 응답 객체화
+     * @Parameter : [board, account]
+     * @Return : BoardResponse
+     **/
     public static BoardResponse toBoardResponse(Board board, Account account) {
         return BoardResponse.builder()
                 .boardId(board.getBoardId())

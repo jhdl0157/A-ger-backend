@@ -28,6 +28,7 @@ import java.util.List;
 
 import static com.ireland.ager.chat.entity.QMessageRoom.messageRoom;
 import static com.ireland.ager.chat.entity.QMessage.message1;
+
 @Repository
 @RequiredArgsConstructor
 public class MessageRoomRepositoryImpl implements MessageRoomRepositoryCustom {
@@ -53,12 +54,12 @@ public class MessageRoomRepositoryImpl implements MessageRoomRepositoryCustom {
             if (sellerId.equals(messageRoom.getSellerId())) {
                 if (messageRoom.getRoomStatus().equals(RoomStatus.BUYEROUT)
                         || messageRoom.getRoomStatus().equals(RoomStatus.FULL)) {
-                    content.add(MessageSummaryResponse.toMessageSummaryResponse(messageRoom, sellerId,message));
+                    content.add(MessageSummaryResponse.toMessageSummaryResponse(messageRoom, sellerId, message));
                 }
             } else {
                 if (messageRoom.getRoomStatus().equals(RoomStatus.SELLEROUT)
                         || messageRoom.getRoomStatus().equals(RoomStatus.FULL)) {
-                    content.add(MessageSummaryResponse.toMessageSummaryResponse(messageRoom, buyerId,message));
+                    content.add(MessageSummaryResponse.toMessageSummaryResponse(messageRoom, buyerId, message));
                 }
             }
         }

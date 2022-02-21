@@ -13,14 +13,31 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Class : ProducerConfig
+ * @Description : 프로듀서 설정 클래스
+ **/
 @EnableKafka
 @Configuration
 public class ProducerConfig {
+
+    /**
+     * @Method : producerFactory
+     * @Description :
+     * @Parameter : []
+     * @Return : ProducerFactory<String, MessageRequest>
+     **/
     @Bean
     public ProducerFactory<String, MessageRequest> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigurations());
     }
 
+    /**
+     * @Method : producerConfigurations
+     * @Description :
+     * @Parameter : []
+     * @Return :  Map<String, Object>
+     **/
     @Bean
     public Map<String, Object> producerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
@@ -30,6 +47,12 @@ public class ProducerConfig {
         return configurations;
     }
 
+    /**
+     * @Method : kafkaTemplate
+     * @Description :
+     * @Parameter : []
+     * @Return : KafkaTemplate<String, MessageRequest>
+     **/
     @Bean
     public KafkaTemplate<String, MessageRequest> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
