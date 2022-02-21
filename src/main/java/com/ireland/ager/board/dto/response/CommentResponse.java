@@ -8,6 +8,10 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * @Class : CommentResponse
+ * @Description : 댓글 도메인에 대한 Response DTO
+ **/
 @Data
 @Builder
 public class CommentResponse {
@@ -18,6 +22,12 @@ public class CommentResponse {
     LocalDateTime createAt;
     LocalDateTime updateAt;
 
+    /**
+     * @Method : toCommentResponse
+     * @Description : 댓글 데이터 응답 객체화
+     * @Parameter : [comment]
+     * @Return : CommentResponse
+     **/
     public static CommentResponse toCommentResponse(Comment comment) {
         return CommentResponse.builder()
                 .commentId(comment.getCommentId())

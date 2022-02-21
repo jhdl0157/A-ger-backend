@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @Class : Product
+ * @Description : 상품도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter
@@ -48,15 +52,33 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    /**
+     * @Method : addAccount
+     * @Description : 계정 엔티티와 양방향 맵핑
+     * @Parameter : [updateAccount]
+     * @Return : null
+     **/
     public void addAccount(Account updateAccount) {
         this.setAccount(updateAccount);
     }
 
+    /**
+     * @Method : addUrl
+     * @Description : Url 엔티티와 양방량 맵핑
+     * @Parameter : [url]
+     * @Return : null
+     **/
     public void addUrl(Url url) {
         this.getUrlList().add(url);
         url.setProductId(this);
     }
 
+    /**
+     * @Method : deleteUrl
+     * @Description : Url 엔티티 삭제
+     * @Parameter : []
+     * @Return : null
+     **/
     public void deleteUrl() {
         for (Iterator<Url> it = this.getUrlList().iterator(); it.hasNext(); ) {
             Url url = it.next();

@@ -6,7 +6,10 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * @Class : OtherAccountResponse
+ * @Description : 계정 도메인에 대한 Response DTO
+ **/
 @Data
 @Builder
 public class OtherAccountResponse {
@@ -17,6 +20,12 @@ public class OtherAccountResponse {
     Double avgStar;
     LocalDateTime createdAt;
 
+    /**
+     * @Method : toOtherAccountResponse
+     * @Description : 계정 정보 데이터 응답 객체화
+     * @Parameter : [account]
+     * @Return : OtherAccountResponse
+     **/
     public static OtherAccountResponse toOtherAccountResponse(Account account) {
         return OtherAccountResponse.builder()
                 .profileNickname(account.getProfileNickname())

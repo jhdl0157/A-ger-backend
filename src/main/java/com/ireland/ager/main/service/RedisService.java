@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @Class : RedisService
+ * @Description : 메인 도메인에 대한 레디스 서비스
+ **/
 @Service
 @Transactional
 @Slf4j
@@ -19,6 +23,12 @@ public class RedisService {
     private final RedisTemplate redisTemplate;
     private final AccountServiceImpl accountService;
 
+    /**
+     * @Method : getSearchList
+     * @Description : 검색 리스트 조회
+     * @Parameter : [accessToken]
+     * @Return : List<String>
+     **/
     public List<String> getSearchList(String accessToken) {
         Account accountByAccessToken = accountService.findAccountByAccessToken(accessToken);
         String key = "search::" + accountByAccessToken.getAccountId();
@@ -26,6 +36,12 @@ public class RedisService {
         return listOperations.range(key, 0, listOperations.size(key));
     }
 
+    /**
+     * @Method : postKeyword
+     * @Description : 사용자 별 검색 키워드 등록
+     * @Parameter : [accessToken, keyword]
+     * @Return : null
+     **/
     public void postKeyword(String accessToken, String keyword) {
         if (keyword == null) return;
         log.info("{}", keyword);

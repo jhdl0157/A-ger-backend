@@ -14,9 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+/**
+ * @Class : KafkaProductService 
+ * @Description : 채팅도메인에 대한 KafkaProductService
+ **/
 public class KafkaProductService {
     private final KafkaTemplate<String, MessageRequest> kafkaTemplate;
 
+    /**
+     * @Method : sendMessage
+     * @Description :
+     * @Parameter : [message]
+     * @Return : null
+     **/
     public void sendMessage(MessageRequest message) {
         System.out.println("send message : " + message);
         try {

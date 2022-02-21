@@ -7,6 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @Class : Url
+ * @Description : URL도메인에 대한 엔티티
+ **/
 @Entity
 @Getter
 @Setter

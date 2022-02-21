@@ -16,6 +16,10 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * @Class : BaseEntity
+ * @Description : 도메인에 대한 공통 엔티티
+ **/
 @Getter
 @Setter
 @MappedSuperclass

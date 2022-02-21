@@ -6,11 +6,21 @@ import com.ireland.ager.review.entity.Review;
 import lombok.Data;
 
 
+/**
+ * @Class : ReviewRequest
+ * @Description : 리뷰 도메인에 대한 Request DTO
+ **/
 @Data
 public class ReviewRequest {
     String comment;
     int stars;
 
+    /**
+     * @Method : toReview
+     * @Description : 리뷰 정보 데이터 객체화
+     * @Parameter : [reviewRequest, seller, product, buyer]
+     * @Return : Review
+     **/
     public static Review toReview(ReviewRequest reviewRequest, Account seller, Product product, Account buyer) {
         Review review = new Review();
         review.addAccount(seller);

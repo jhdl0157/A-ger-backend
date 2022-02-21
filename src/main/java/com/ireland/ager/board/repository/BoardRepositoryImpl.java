@@ -23,18 +23,28 @@ import static com.ireland.ager.board.entity.QBoard.board;
 import static com.ireland.ager.board.entity.QBoardUrl.boardUrl;
 import static com.ireland.ager.board.entity.QComment.comment;
 
+/**
+ * @Class : BoardRepositoryImpl
+ * @Description : 게시판 도메인에 대한 레파지토리
+ **/
 @Repository
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * @Method : findAllBoardPageableOrderByCreatedAtDesc
+     * @Description : 모든 게시물 내림차순 조회
+     * @Parameter : [keyword, pageable]
+     * @Return : Slice<BoardSummaryResponse>
+     **/
     @Override
     public Slice<BoardSummaryResponse> findAllBoardPageableOrderByCreatedAtDesc(String keyword, Pageable pageable) {
         JPAQuery<Board> boardJPAQuery = queryFactory
                 .selectFrom(board)
                 .where(keywordContains(keyword))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1); //limit보다 한 개 더 들고온다.
+                .limit(pageable.getPageSize() + 1);
         for (Sort.Order o : pageable.getSort()) {
             PathBuilder pathBuilder = new PathBuilder(board.getType(), board.getMetadata());
             boardJPAQuery.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
@@ -45,7 +55,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
             content.add(BoardSummaryResponse.toBoardSummaryResponse(board));
         }
         boolean hasNext = false;
-        //마지막 페이지는 사이즈가 항상 작다.
+
         if (content.size() > pageable.getPageSize()) {
             content.remove(pageable.getPageSize());
             hasNext = true;
@@ -53,6 +63,12 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         return new SliceImpl<>(content, pageable, hasNext);
     }
 
+    /**
+     * @Method : findBoardsByAccountId
+     * @Description : 계정 정보로 게시물 조회
+     * @Parameter : [accountId, pageable]
+     * @Return : Slice<BoardSummaryResponse>
+     **/
     @Override
     public Slice<BoardSummaryResponse> findBoardsByAccountId(Long accountId, Pageable pageable) {
         JPAQuery<Board> boardQuery = queryFactory
@@ -82,6 +98,12 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         return new SliceImpl<>(content, pageable, hasNext);
     }
 
+    /**
+     * @Method : addViewCntFromRedis
+     * @Description : 레디스 서버 게시물 조회수 증가
+     * @Parameter : [boardId, addCnt]
+     * @Return : null
+     **/
     @Override
     public void addViewCntFromRedis(Long boardId, Long addCnt) {
         queryFactory
@@ -91,6 +113,12 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .execute();
     }
 
+    /**
+     * @Method : addViewCnt
+     * @Description : 게시물 조회수 증가
+     * @Parameter : [boardId]
+     * @Return : Board
+     **/
     @Override
     public Board addViewCnt(Long boardId) {
         queryFactory
@@ -102,10 +130,16 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .selectFrom(board)
                 .leftJoin(board.urlList, boardUrl)
                 .fetchJoin()
-                .where(board.boardId.eq(boardId),board.eq(boardUrl.board))
+                .where(board.boardId.eq(boardId), board.eq(boardUrl.board))
                 .fetchOne();
     }
 
+    /**
+     * @Method : keywordContains
+     * @Description : 게시물 키워드 조회
+     * @Parameter : [keyword]
+     * @Return : BooleanExpression
+     **/
     private BooleanExpression keywordContains(String keyword) {
         return ObjectUtils.isEmpty(keyword) ? null : board.title.contains(keyword);
     }

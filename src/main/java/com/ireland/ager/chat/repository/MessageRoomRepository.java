@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>, MessageRoomRepositoryCustom {
-    Optional<MessageRoom> findMessageRoomByProductAndBuyerId(Product product,Account buyerId);
+    Optional<MessageRoom> findMessageRoomByProductAndBuyerId(Product product, Account buyerId);
 
     Optional<MessageRoom> findMessageRoomByRoomId(Long roomId);
 }

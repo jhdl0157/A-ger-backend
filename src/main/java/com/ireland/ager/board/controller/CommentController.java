@@ -1,6 +1,5 @@
 package com.ireland.ager.board.controller;
 
-
 import com.ireland.ager.board.dto.request.CommentRequest;
 import com.ireland.ager.board.dto.response.CommentResponse;
 import com.ireland.ager.board.repository.BoardRepository;
@@ -16,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+/**
+ * @Class : CommentController
+ * @Description : 댓글 도메인에 대한 컨트롤러
+ **/
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
@@ -26,6 +29,12 @@ public class CommentController {
     private final BoardRepository boardRepository;
     private final ResponseService responseService;
 
+    /**
+     * @Method : createComment
+     * @Description : 댓글 등록
+     * @Parameter : [accessToken, commentRequest, boardId]
+     * @Return : ResponseEntity<SingleResult<CommentResponse>>
+     **/
     @PostMapping("/{boardId}/comments")
     public ResponseEntity<SingleResult<CommentResponse>> createComment(@RequestHeader("Authorization") String accessToken,
                                                                        @RequestPart(value = "comments") CommentRequest commentRequest,
@@ -36,6 +45,12 @@ public class CommentController {
         return new ResponseEntity<>(responseService.getSingleResult(commentResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method : updateComment
+     * @Description : 댓글 수정
+     * @Parameter : [accessToken, commentRequest, boardId, commentId]
+     * @Return : ResponseEntity<SingleResult<CommentResponse>>
+     **/
     @PatchMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<SingleResult<CommentResponse>> updateComment(@RequestHeader("Authorization") String accessToken,
                                                                        @RequestPart(value = "comments") CommentRequest commentRequest,
@@ -47,6 +62,12 @@ public class CommentController {
         return new ResponseEntity<>(responseService.getSingleResult(commentResponse), HttpStatus.OK);
     }
 
+    /**
+     * @Method : deleteComment
+     * @Description : 댓글 삭제
+     * @Parameter : [accessToken, boardId, commentId]
+     * @Return : ResponseEntity<CommonResult>
+     **/
     @DeleteMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<CommonResult> deleteComment(@RequestHeader("Authorization") String accessToken,
                                                       @PathVariable(value = "boardId") Long boardId,

@@ -25,6 +25,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * @Class : AuthServiceImpl
+ * @Description : 계정 도메인에 대한 인증 서비스
+ **/
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -47,6 +51,12 @@ public class AuthServiceImpl {
     private final String TOKEN_TYPE = "Bearer";
     private final String EMAIL_SUFFIX = "@gmail.com";
 
+    /**
+     * @Method : getKakaoLoginUrl
+     * @Description : 로그인 링크 반환
+     * @Parameter : []
+     * @Return : String
+     **/
     public String getKakaoLoginUrl() {
         return new StringBuilder()
                 .append(KAKAO_URL).append("/oauth/authorize?client_id=").append(kakaoRestApiKey)
@@ -54,6 +64,13 @@ public class AuthServiceImpl {
                 .append("&response_type=code")
                 .toString();
     }
+
+    /**
+     * @Method : getKakaoLogin
+     * @Description : 카카오 로그인
+     * @Parameter : [code]
+     * @Return : MyAccountResponse
+     **/
     public MyAccountResponse getKakaoLogin(String code) {
         HashMap<String, String> kakaoTokens = getKakaoTokens(code);
         KakaoResponse kakaoResponse = getKakaoUserInfo(kakaoTokens.get("access_token"));
@@ -73,6 +90,13 @@ public class AuthServiceImpl {
                     kakaoResponse.toAccount(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));
         }
     }
+
+    /**
+     * @Method : getKakaoLogout
+     * @Description : 카카오 로그아웃
+     * @Parameter : [accessToken]
+     * @Return : null
+     **/
     public void getKakaoLogout(String accessToken) {
         isValidToken(accessToken);
         Account accountByAccessToken = accountService.findAccountByAccessToken(accessToken.split(" ")[1]);
@@ -89,6 +113,13 @@ public class AuthServiceImpl {
         Optional<Account> optionalLogoutAccount = accountRepository.findById(accountByAccessToken.getAccountId());
         optionalLogoutAccount.ifPresent(accountRepository::save);
     }
+
+    /**
+     * @Method : getKakaoTokens
+     * @Description : 카카오 토큰 조회
+     * @Parameter : [code]
+     * @Return : HashMap<String, String>
+     **/
     public HashMap<String, String> getKakaoTokens(String code) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -108,6 +139,12 @@ public class AuthServiceImpl {
         return tokenResEntity.getBody();
     }
 
+    /**
+     * @Method : getKakaoUserInfo
+     * @Description : 카카오 유저 정보 조회
+     * @Parameter : [accessToken]
+     * @Return : KakaoResponse
+     **/
     public KakaoResponse getKakaoUserInfo(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -120,6 +157,12 @@ public class AuthServiceImpl {
         return userInfo.getBody();
     }
 
+    /**
+     * @Method : updateTokenWithAccount
+     * @Description : 카카오 토큰 갱신
+     * @Parameter : [accountId, accessToken, refreshToken]
+     * @Return : MyAccountResponse
+     **/
     public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken, String refreshToken) {
         Optional<Account> optionalExistAccount = accountRepository.findById(accountId);
         Account existAccount = optionalExistAccount.map(account -> {
@@ -132,9 +175,14 @@ public class AuthServiceImpl {
         return MyAccountResponse.toAccountResponse(existAccount);
     }
 
+    /**
+     * @Method : updateTokenWithAccount
+     * @Description : 카카오 액세스 토큰 갱신
+     * @Parameter : [accountId]
+     * @Return : String
+     **/
     public String updateAccessToken(Long accountId) {
         Optional<Account> optionalAccountForUpdate = accountRepository.findById(accountId);
-        //FIXME 에러 처리 고쳐야함
         Account accountForUpdate = optionalAccountForUpdate.orElseThrow(NotFoundException::new);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -160,8 +208,14 @@ public class AuthServiceImpl {
         return newToken;
     }
 
+    /**
+     * @Method : isValidToken
+     * @Description : 토큰 유효성 검사
+     * @Parameter : [accessToken]
+     * @Return : null
+     **/
     public void isValidToken(String accessToken) {
-        validateTokenExists(accessToken);
+        if (accessToken.isEmpty()) throw new NotFoundTokenException();
         String vaildCheckHost = "https://kapi.kakao.com/v1/user/access_token_info";
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -171,15 +225,10 @@ public class AuthServiceImpl {
         try {
             ResponseEntity<HashMap> isValidEntity = restTemplate.exchange(vaildCheckHost, HttpMethod.GET, kakaoValidTokenReq, HashMap.class);
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == 401 || e.getStatusCode().value()==400)
+            if (e.getStatusCode().value() == 401 || e.getStatusCode().value() == 400)
                 throw new UnAuthorizedTokenException();
             else
                 throw new IntenalServerErrorException();
         }
-    }
-    public void validateTokenExists(String accessToken){
-        if(accessToken.isEmpty())
-            throw new NotFoundTokenException();
-
     }
 }
