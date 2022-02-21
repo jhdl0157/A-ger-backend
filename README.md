@@ -47,7 +47,7 @@ The used trading platform for student who living in Ireland🍀
 ### 🎊 Architecture & Pipeline
 
 ------
-![시각화](https://user-images.githubusercontent.com/72914519/154429333-95de9540-6928-4cb2-b95a-9098ee169267.png)
+![시각화](https://user-images.githubusercontent.com/72914519/154930546-4b8234a1-9010-40c3-9a10-90bd376b0b96.png)
 ### 🔑**CI & CD Pipeline**
 - Develop 브랜치 기능 개발 완료 후, Main 브랜치에 Pull Request 전송
 - Main 브랜치 PR 이후, Merge and Push
