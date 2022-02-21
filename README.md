@@ -58,7 +58,6 @@ The used trading platform for student who living in Ireland🍀
 - 원격 서버 EC2 도커 실행
 - 도커 허브 이미지 Pull
 - 도커 컨테이너 실행
-  --- Nginx 추가해야함!
 ------
 ### 🏠 ERD 구조
 ------
