@@ -71,9 +71,9 @@ public class AuthServiceImpl {
      * @Parameter : [code]
      * @Return : MyAccountResponse
      **/
-    public MyAccountResponse getKakaoLogin(String code) {
-        HashMap<String, String> kakaoTokens = getKakaoTokens(code);
-        KakaoResponse kakaoResponse = getKakaoUserInfo(kakaoTokens.get("access_token"));
+    public MyAccountResponse getKakaoLogin(String accessToken) {
+        //HashMap<String, String> kakaoTokens = getKakaoTokens(code);
+        KakaoResponse kakaoResponse = getKakaoUserInfo(accessToken);
 
         String accountEmail = kakaoResponse.getKakao_account().getEmail();
         //TODO 나중에 카카오 인증으로 이메일 필수 동의할 수 있게 하자
@@ -83,11 +83,11 @@ public class AuthServiceImpl {
         Account accountForCheck = accountService.findAccountByAccountEmail(accountEmail);
         if (accountForCheck != null) {
             // 존재한다면 Token 값을 갱신하고 반환한다.
-            return updateTokenWithAccount(accountForCheck.getAccountId(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
+            return updateTokenWithAccount(accountForCheck.getAccountId(), accessToken);
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
             return accountService.insertAccount(
-                    kakaoResponse.toAccount(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));
+                    kakaoResponse.toAccount(accessToken, kakaoTokens.get("refresh_token")));
         }
     }
 
@@ -163,11 +163,10 @@ public class AuthServiceImpl {
      * @Parameter : [accountId, accessToken, refreshToken]
      * @Return : MyAccountResponse
      **/
-    public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken, String refreshToken) {
+    public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken) {
         Optional<Account> optionalExistAccount = accountRepository.findById(accountId);
         Account existAccount = optionalExistAccount.map(account -> {
             account.setAccessToken(accessToken);
-            account.setRefreshToken(refreshToken);
             return account;
         }).orElseThrow(NotFoundException::new);
 

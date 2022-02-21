@@ -46,7 +46,7 @@ public class KakaoResponse {
      * @Parameter : [accessToken, refreshToken]
      * @Return : Account
      **/
-    public Account toAccount(String accessToken, String refreshToken) {
+    public Account toAccount(String accessToken) {
         Account account = new Account();
         if (this.kakao_account.email == null || this.kakao_account.email.equals(""))
             account.setAccountEmail(String.valueOf(this.id));
@@ -55,7 +55,6 @@ public class KakaoResponse {
         account.setUserName(this.kakao_account.profile.nickname);
         account.setProfileImageUrl(this.kakao_account.profile.profile_image_url);
         account.setAccessToken(accessToken);
-        account.setRefreshToken(refreshToken);
         return account;
     }
 }
