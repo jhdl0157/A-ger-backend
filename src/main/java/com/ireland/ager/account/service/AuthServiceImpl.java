@@ -57,6 +57,7 @@ public class AuthServiceImpl {
      * @Parameter : []
      * @Return : String
      **/
+    /*
     public String getKakaoLoginUrl() {
         return new StringBuilder()
                 .append(KAKAO_URL).append("/oauth/authorize?client_id=").append(kakaoRestApiKey)
@@ -64,6 +65,7 @@ public class AuthServiceImpl {
                 .append("&response_type=code")
                 .toString();
     }
+     */
 
     /**
      * @Method : getKakaoLogin
@@ -87,7 +89,7 @@ public class AuthServiceImpl {
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
             return accountService.insertAccount(
-                    kakaoResponse.toAccount(accessToken, kakaoTokens.get("refresh_token")));
+                    kakaoResponse.toAccount(accessToken));
         }
     }
 
@@ -120,6 +122,7 @@ public class AuthServiceImpl {
      * @Parameter : [code]
      * @Return : HashMap<String, String>
      **/
+    /*
     public HashMap<String, String> getKakaoTokens(String code) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -138,6 +141,7 @@ public class AuthServiceImpl {
 
         return tokenResEntity.getBody();
     }
+     */
 
     /**
      * @Method : getKakaoUserInfo
@@ -180,6 +184,7 @@ public class AuthServiceImpl {
      * @Parameter : [accountId]
      * @Return : String
      **/
+    /*
     public String updateAccessToken(Long accountId) {
         Optional<Account> optionalAccountForUpdate = accountRepository.findById(accountId);
         Account accountForUpdate = optionalAccountForUpdate.orElseThrow(NotFoundException::new);
@@ -206,6 +211,7 @@ public class AuthServiceImpl {
 
         return newToken;
     }
+     */
 
     /**
      * @Method : isValidToken

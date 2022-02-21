@@ -34,7 +34,6 @@ public class Account extends BaseEntity implements Serializable {
     String userName;
     String profileImageUrl;
     String accessToken;
-    String refreshToken;
     @Formula("(select avg(r.stars) from review r where r.seller_id=account_id)")
     Double avgStar;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")

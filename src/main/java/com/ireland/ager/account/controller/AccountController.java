@@ -79,12 +79,13 @@ public class AccountController {
      * @Parameter : [accountId]
      * @Return : ResponseEntity<SingleResult<String>>
      **/
+    /*
     @GetMapping("/token/{accountId}")
     public ResponseEntity<SingleResult<String>> updateAccessToken(@PathVariable Long accountId) {
         String newToken = authService.updateAccessToken(accountId);
         return new ResponseEntity<>(responseService.getSingleResult(newToken), HttpStatus.OK);
     }
-
+     */
     /**
      * @Method : getMyAccount
      * @Description : 내 계정 정보 반환
