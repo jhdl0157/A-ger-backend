@@ -57,6 +57,7 @@ public class AuthServiceImpl {
      * @Parameter : []
      * @Return : String
      **/
+    /*
     public String getKakaoLoginUrl() {
         return new StringBuilder()
                 .append(KAKAO_URL).append("/oauth/authorize?client_id=").append(kakaoRestApiKey)
@@ -64,6 +65,7 @@ public class AuthServiceImpl {
                 .append("&response_type=code")
                 .toString();
     }
+     */
 
     /**
      * @Method : getKakaoLogin
@@ -71,9 +73,9 @@ public class AuthServiceImpl {
      * @Parameter : [code]
      * @Return : MyAccountResponse
      **/
-    public MyAccountResponse getKakaoLogin(String code) {
-        HashMap<String, String> kakaoTokens = getKakaoTokens(code);
-        KakaoResponse kakaoResponse = getKakaoUserInfo(kakaoTokens.get("access_token"));
+    public MyAccountResponse getKakaoLogin(String accessToken) {
+        //HashMap<String, String> kakaoTokens = getKakaoTokens(code);
+        KakaoResponse kakaoResponse = getKakaoUserInfo(accessToken);
 
         String accountEmail = kakaoResponse.getKakao_account().getEmail();
         //TODO 나중에 카카오 인증으로 이메일 필수 동의할 수 있게 하자
@@ -83,11 +85,11 @@ public class AuthServiceImpl {
         Account accountForCheck = accountService.findAccountByAccountEmail(accountEmail);
         if (accountForCheck != null) {
             // 존재한다면 Token 값을 갱신하고 반환한다.
-            return updateTokenWithAccount(accountForCheck.getAccountId(), kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token"));
+            return updateTokenWithAccount(accountForCheck.getAccountId(), accessToken);
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
             return accountService.insertAccount(
-                    kakaoResponse.toAccount(kakaoTokens.get("access_token"), kakaoTokens.get("refresh_token")));
+                    kakaoResponse.toAccount(accessToken));
         }
     }
 
@@ -120,6 +122,7 @@ public class AuthServiceImpl {
      * @Parameter : [code]
      * @Return : HashMap<String, String>
      **/
+    /*
     public HashMap<String, String> getKakaoTokens(String code) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -138,6 +141,7 @@ public class AuthServiceImpl {
 
         return tokenResEntity.getBody();
     }
+     */
 
     /**
      * @Method : getKakaoUserInfo
@@ -163,11 +167,10 @@ public class AuthServiceImpl {
      * @Parameter : [accountId, accessToken, refreshToken]
      * @Return : MyAccountResponse
      **/
-    public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken, String refreshToken) {
+    public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken) {
         Optional<Account> optionalExistAccount = accountRepository.findById(accountId);
         Account existAccount = optionalExistAccount.map(account -> {
             account.setAccessToken(accessToken);
-            account.setRefreshToken(refreshToken);
             return account;
         }).orElseThrow(NotFoundException::new);
 
@@ -181,6 +184,7 @@ public class AuthServiceImpl {
      * @Parameter : [accountId]
      * @Return : String
      **/
+    /*
     public String updateAccessToken(Long accountId) {
         Optional<Account> optionalAccountForUpdate = accountRepository.findById(accountId);
         Account accountForUpdate = optionalAccountForUpdate.orElseThrow(NotFoundException::new);
@@ -207,6 +211,7 @@ public class AuthServiceImpl {
 
         return newToken;
     }
+     */
 
     /**
      * @Method : isValidToken

@@ -42,11 +42,14 @@ public class AccountController {
      * @Parameter : []
      * @Return : ResponseEntity<SingleResult<String>>
      **/
+
+    /*
     @GetMapping("/login-url")
     public ResponseEntity<SingleResult<String>> loginUrl() {
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
     }
-  
+    */
+
     /**
      * @Method : getTokenAndJoinOrLogin
      * @Description : 회원가입 또는 로그인
@@ -54,8 +57,8 @@ public class AccountController {
      * @Return : ResponseEntity<SingleResult<MyAccountResponse>>
      **/
     @GetMapping("/login")
-    public ResponseEntity<SingleResult<MyAccountResponse>> getTokenAndJoinOrLogin(@RequestParam("code") String code) {
-        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
+    public ResponseEntity<SingleResult<MyAccountResponse>> getTokenAndJoinOrLogin(@RequestHeader("Authorization") String accessToken) {
+        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(accessToken)), HttpStatus.CREATED);
     }
   
     /**
@@ -76,12 +79,13 @@ public class AccountController {
      * @Parameter : [accountId]
      * @Return : ResponseEntity<SingleResult<String>>
      **/
+    /*
     @GetMapping("/token/{accountId}")
     public ResponseEntity<SingleResult<String>> updateAccessToken(@PathVariable Long accountId) {
         String newToken = authService.updateAccessToken(accountId);
         return new ResponseEntity<>(responseService.getSingleResult(newToken), HttpStatus.OK);
     }
-
+     */
     /**
      * @Method : getMyAccount
      * @Description : 내 계정 정보 반환
