@@ -62,7 +62,14 @@ The used trading platform for student who living in Ireland🍀
 ### 🏠 ERD 구조
 ------
 ![ager](https://user-images.githubusercontent.com/58693617/154427811-28ddef62-739f-49be-9c4f-0f2f25728108.png)
+------
 
+------
+### 📖 API 문서링크
+ 
+ [ager-api-documents](https://documenter.getpostman.com/view/16841838/UVeNkN3d)
+------
+ 
 ------
 ### 🧰 주요기능
 ------
@@ -79,9 +86,7 @@ The used trading platform for student who living in Ireland🍀
 - 상품 및 게시판 조회수
 
 ------
-
 ### 💁🏻 USE-CASE
-
 ------
 - 모든 사용자
   - 모든 사용자는 카카오 로그인 API를 통해 회원가입을 할 수 있다.
