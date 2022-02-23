@@ -67,7 +67,7 @@ The used trading platform for student who living in Ireland🍀
 ------
 ### 📖 API 문서링크
  
- [ager-api-documents](https://documenter.getpostman.com/view/16841838/UVeNkN3d)
+- [ager-api-documents](https://documenter.getpostman.com/view/16841838/UVeNkN3d)
 ------
  
 ------
