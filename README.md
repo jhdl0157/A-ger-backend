@@ -38,7 +38,7 @@ The used trading platform for student who living in Ireland🍀
 | ▷ | Spring Security| EC2 | Slack           |
 | ▷ | Oauth2| S3 | KakaoTalk                 |
 | ▷ | QueryDSL | GitHub Action|  🇨🇮          |
-| ▷ | Web Socket | ELK | 🇨🇮                  |
+| ▷ | Web Socket | ELK Stack | 🇨🇮                  |
 | ▷ | STOMP | Docker| 🇨🇮                     |
 | ▷ | Gradle | 🇨🇮 | 🇨🇮                        |
 
