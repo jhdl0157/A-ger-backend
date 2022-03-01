@@ -86,7 +86,7 @@ public class MainController {
      **/
     @GetMapping("/api/popular-keyword")
     public ResponseEntity<ListResult<String>> searchPopularKeywords(
-            /*@RequestHeader("Authorization") String accessToken*/) {
+            @RequestHeader("Authorization") String accessToken) {
         return new ResponseEntity<>(responseService.getListResult(
                 searchService.getPopularSearchList()), HttpStatus.OK);
     }
