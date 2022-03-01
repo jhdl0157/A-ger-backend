@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.ireland.ager.account.entity.Account;
 import com.ireland.ager.account.exception.UnAuthorizedTokenException;
 import com.ireland.ager.account.service.AccountServiceImpl;
+import com.ireland.ager.main.entity.Search;
 import com.ireland.ager.main.exception.NotFoundException;
+import com.ireland.ager.main.repository.SearchRepository;
 import com.ireland.ager.main.service.UploadServiceImpl;
 import com.ireland.ager.product.dto.request.ProductRequest;
 import com.ireland.ager.product.dto.request.ProductUpdateRequest;
@@ -47,6 +49,7 @@ public class ProductServiceImpl {
     private final ProductRepository productRepository;
     private final AccountServiceImpl accountService;
     private final UploadServiceImpl uploadService;
+    private final SearchRepository searchRepository;
 
     @Value("${cloud.aws.s3.bucket.name}")
     public String bucket;
@@ -59,6 +62,7 @@ public class ProductServiceImpl {
      * @Return : Slice<ProductThumbResponse>
      **/
     public Slice<ProductThumbResponse> findProductAllByCreatedAtDesc(Category category, String keyword, Pageable pageable) {
+        if(!keyword.isEmpty()) searchRepository.save(new Search(keyword));
         return productRepository.findAllProductPageableOrderByCreatedAtDesc(category, keyword, pageable);
     }
 

@@ -3,6 +3,7 @@ package com.ireland.ager.product.repository;
 import com.ireland.ager.product.dto.response.ProductThumbResponse;
 import com.ireland.ager.product.entity.Category;
 import com.ireland.ager.product.entity.Product;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -56,7 +57,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     public Slice<ProductThumbResponse> findAllProductPageableOrderByCreatedAtDesc(Category category, String keyword, Pageable pageable) {
         JPAQuery<Product> productQuery = queryFactory
                 .selectFrom(product)
-                .where(keywordContains(keyword), categoryEq(category))
+                .where(keywordListContains(keyword), categoryEq(category))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1); //limit보다 한 개 더 들고온다.
         for (Sort.Order o : pageable.getSort()) {
@@ -109,7 +110,19 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         return ObjectUtils.isEmpty(category) ? null : product.category.eq(category);
     }
 
+    /*
     private BooleanExpression keywordContains(String keyword) {
         return ObjectUtils.isEmpty(keyword) ? null : product.productName.contains(keyword);
+    }
+     */
+
+    private BooleanBuilder keywordListContains(String keyword) {
+        if(ObjectUtils.isEmpty(keyword)) return null;
+        BooleanBuilder builder=new BooleanBuilder();
+        String[] splitedKeyword = keyword.split(" ");
+        for(String value:splitedKeyword) {
+            builder.and(product.productName.contains(value));
+        }
+        return builder;
     }
 }
