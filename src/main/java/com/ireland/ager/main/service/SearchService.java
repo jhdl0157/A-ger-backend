@@ -5,13 +5,17 @@ import com.ireland.ager.account.service.AccountServiceImpl;
 import com.ireland.ager.main.repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Class : RedisService
@@ -76,5 +80,16 @@ public class SearchService {
             }
             listOperations.rightPush(key,keyword);
         }
+    }
+
+    /**
+     * @Method : deletePopularCacheFromRedis
+     * @Description : 레디스의 인기 검색어를 매일 0시에 삭제
+     * @Parameter : []
+     * @Return : null
+     **/
+    @Scheduled(cron = "0 0 0 * * ?")
+    @CacheEvict(value = "popular", allEntries = true)
+    public void deletePopularCacheFromRedis() {
     }
 }
