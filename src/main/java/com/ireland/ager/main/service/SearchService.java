@@ -2,8 +2,10 @@ package com.ireland.ager.main.service;
 
 import com.ireland.ager.account.entity.Account;
 import com.ireland.ager.account.service.AccountServiceImpl;
+import com.ireland.ager.main.repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ import java.util.List;
 public class SearchService {
     private final RedisTemplate redisTemplate;
     private final AccountServiceImpl accountService;
-
+    private final SearchRepository searchRepository;
     /**
      * @Method : getSearchList
      * @Description : 최근 검색 리스트 조회
@@ -42,8 +44,8 @@ public class SearchService {
      * @Parameter : [accessToken]
      * @Return : List<String>
      **/
-    public List<String> getPopularSearchList(String accessToken) {
-        return null;
+    public List<String> getPopularSearchList() {
+        return searchRepository.findFirst5SearchesOrderByPopularDesc();
     }
 
     /**

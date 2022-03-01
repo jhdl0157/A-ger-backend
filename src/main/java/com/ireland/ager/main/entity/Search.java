@@ -21,7 +21,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = "searchId", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Search extends BaseEntity implements Serializable {
+public class Search implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long searchId;
