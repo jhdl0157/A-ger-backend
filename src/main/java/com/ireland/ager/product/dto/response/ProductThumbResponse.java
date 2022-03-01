@@ -18,6 +18,7 @@ import java.util.List;
 public class ProductThumbResponse {
     String productName;
     String productPrice;
+    String productStatus;
     Long productViewCnt;
     Category category;
     LocalDateTime createdAt;
@@ -33,6 +34,7 @@ public class ProductThumbResponse {
         return ProductThumbResponse.builder()
                 .productName(product.getProductName())
                 .productPrice(product.getProductPrice())
+                .productStatus(product.getStatus().name())
                 .productViewCnt(product.getProductViewCnt())
                 .category(product.getCategory())
                 .createdAt(product.getCreatedAt())

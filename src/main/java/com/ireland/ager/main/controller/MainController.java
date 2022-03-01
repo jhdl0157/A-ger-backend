@@ -5,7 +5,7 @@ import com.ireland.ager.board.service.BoardServiceImpl;
 import com.ireland.ager.main.common.ListResult;
 import com.ireland.ager.main.common.SliceResult;
 import com.ireland.ager.main.common.service.ResponseService;
-import com.ireland.ager.main.service.RedisService;
+import com.ireland.ager.main.service.SearchService;
 import com.ireland.ager.product.dto.response.ProductThumbResponse;
 import com.ireland.ager.product.entity.Category;
 import com.ireland.ager.product.service.ProductServiceImpl;
@@ -29,7 +29,7 @@ public class MainController {
     private final ProductServiceImpl productService;
     private final BoardServiceImpl boardService;
     private final ResponseService responseService;
-    private final RedisService redisService;
+    private final SearchService searchService;
 
     /**
      * @Method : searchAllProducts
@@ -44,7 +44,7 @@ public class MainController {
             , @RequestParam(value = "keyword", required = false) String keyword
             , Pageable pageable) {
         String[] splitToken = accessToken.split(" ");
-        redisService.postKeyword(splitToken[1], keyword);
+        searchService.postKeyword(splitToken[1], keyword);
         return new ResponseEntity<>(responseService.getSliceResult(
                 productService.findProductAllByCreatedAtDesc(category, keyword, pageable)), HttpStatus.OK);
     }
@@ -70,11 +70,24 @@ public class MainController {
      * @Parameter : [accessToken]
      * @Return : ResponseEntity<ListResult<String>>
      **/
-    @GetMapping("/api/keyword")
+    @GetMapping("/api/recent-keyword")
     public ResponseEntity<ListResult<String>> searchAccountKeywords(
             @RequestHeader("Authorization") String accessToken) {
         String[] splitToken = accessToken.split(" ");
         return new ResponseEntity<>(responseService.getListResult(
-                redisService.getSearchList(splitToken[1])), HttpStatus.OK);
+                searchService.getSearchList(splitToken[1])), HttpStatus.OK);
+    }
+
+    /**
+     * @Method : searchAccountKeywords
+     * @Description : 키워드 조회
+     * @Parameter : [accessToken]
+     * @Return : ResponseEntity<ListResult<String>>
+     **/
+    @GetMapping("/api/popular-keyword")
+    public ResponseEntity<ListResult<String>> searchPopularKeywords(
+            @RequestHeader("Authorization") String accessToken) {
+        return new ResponseEntity<>(responseService.getListResult(
+                searchService.getPopularSearchList()), HttpStatus.OK);
     }
 }

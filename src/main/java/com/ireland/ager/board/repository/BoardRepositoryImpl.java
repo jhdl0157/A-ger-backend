@@ -2,6 +2,7 @@ package com.ireland.ager.board.repository;
 
 import com.ireland.ager.board.dto.response.BoardSummaryResponse;
 import com.ireland.ager.board.entity.Board;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -22,6 +23,7 @@ import java.util.List;
 import static com.ireland.ager.board.entity.QBoard.board;
 import static com.ireland.ager.board.entity.QBoardUrl.boardUrl;
 import static com.ireland.ager.board.entity.QComment.comment;
+import static com.ireland.ager.product.entity.QProduct.product;
 
 /**
  * @Class : BoardRepositoryImpl
@@ -42,7 +44,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     public Slice<BoardSummaryResponse> findAllBoardPageableOrderByCreatedAtDesc(String keyword, Pageable pageable) {
         JPAQuery<Board> boardJPAQuery = queryFactory
                 .selectFrom(board)
-                .where(keywordContains(keyword))
+                .where(keywordListContains(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
         for (Sort.Order o : pageable.getSort()) {
@@ -142,5 +144,15 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
      **/
     private BooleanExpression keywordContains(String keyword) {
         return ObjectUtils.isEmpty(keyword) ? null : board.title.contains(keyword);
+    }
+
+    private BooleanBuilder keywordListContains(String keyword) {
+        if(ObjectUtils.isEmpty(keyword)) return null;
+        BooleanBuilder builder=new BooleanBuilder();
+        String[] splitedKeyword = keyword.split(" ");
+        for(String value:splitedKeyword) {
+            builder.and(product.productName.contains(value));
+        }
+        return builder;
     }
 }
