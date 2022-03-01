@@ -11,7 +11,9 @@ import com.ireland.ager.board.entity.BoardUrl;
 import com.ireland.ager.board.exception.InvalidBoardDetailException;
 import com.ireland.ager.board.exception.InvalidBoardTitleException;
 import com.ireland.ager.board.repository.BoardRepository;
+import com.ireland.ager.main.entity.Search;
 import com.ireland.ager.main.exception.NotFoundException;
+import com.ireland.ager.main.repository.SearchRepository;
 import com.ireland.ager.main.service.UploadServiceImpl;
 import com.ireland.ager.product.exception.InvaildUploadException;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,7 @@ public class BoardServiceImpl {
     private final AccountServiceImpl accountService;
     private final UploadServiceImpl uploadService;
     private final RedisTemplate redisTemplate;
-
+    private final SearchRepository searchRepository;
     /**
      * @Method : createPost
      * @Description : 게시물 생성
@@ -163,6 +165,7 @@ public class BoardServiceImpl {
      * @Return : Slice<BoardSummaryResponse>
      **/
     public Slice<BoardSummaryResponse> findBoardAllByCreatedAtDesc(String keyword, Pageable pageable) {
+        if(!keyword.isEmpty()) searchRepository.save(new Search(keyword));
         return boardRepository.findAllBoardPageableOrderByCreatedAtDesc(keyword, pageable);
     }
 
