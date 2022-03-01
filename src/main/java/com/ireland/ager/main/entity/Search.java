@@ -1,5 +1,6 @@
 package com.ireland.ager.main.entity;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.ireland.ager.config.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @Class : Product
@@ -21,7 +24,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = "searchId", callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Search implements Serializable {
+public class Search extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long searchId;

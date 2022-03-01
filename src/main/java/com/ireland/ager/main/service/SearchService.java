@@ -44,6 +44,7 @@ public class SearchService {
      * @Parameter : [accessToken]
      * @Return : List<String>
      **/
+    @Cacheable(value = "popular")
     public List<String> getPopularSearchList() {
         return searchRepository.findFirst5SearchesOrderByPopularDesc();
     }
@@ -68,6 +69,12 @@ public class SearchService {
         } else if (listOperations.size(key) == 5) {
             listOperations.leftPop(key);
             listOperations.rightPush(key, keyword);
+        }
+        else {
+            while(listOperations.size(key)>=5) {
+                listOperations.leftPop(key);
+            }
+            listOperations.rightPush(key,keyword);
         }
     }
 }

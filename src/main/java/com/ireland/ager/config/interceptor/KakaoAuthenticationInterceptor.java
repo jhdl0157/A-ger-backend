@@ -29,6 +29,7 @@ public class KakaoAuthenticationInterceptor implements HandlerInterceptor {
             , "/kafka/*"
             , "/kafka/**"
             , "/socket.io/*"
+            , "/api/popular-keyword"
     };
 
     /**
