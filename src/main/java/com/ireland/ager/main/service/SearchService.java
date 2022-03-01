@@ -19,13 +19,13 @@ import java.util.List;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class RedisService {
+public class SearchService {
     private final RedisTemplate redisTemplate;
     private final AccountServiceImpl accountService;
 
     /**
      * @Method : getSearchList
-     * @Description : 검색 리스트 조회
+     * @Description : 최근 검색 리스트 조회
      * @Parameter : [accessToken]
      * @Return : List<String>
      **/
@@ -34,6 +34,16 @@ public class RedisService {
         String key = "search::" + accountByAccessToken.getAccountId();
         ListOperations listOperations = redisTemplate.opsForList();
         return listOperations.range(key, 0, listOperations.size(key));
+    }
+
+    /**
+     * @Method : getPopularSearchList
+     * @Description : 인기 검색 리스트 조회
+     * @Parameter : [accessToken]
+     * @Return : List<String>
+     **/
+    public List<String> getPopularSearchList(String accessToken) {
+        return null;
     }
 
     /**
