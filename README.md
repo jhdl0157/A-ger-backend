@@ -85,6 +85,7 @@ The used trading platform for student who living in Ireland🍀
 - 모든 유저 인기 검색어, 사용자별 최근 검색어
 - 상품 및 게시판 조회수
 
+
 ------
 ### 💁🏻 USE-CASE
 ------
